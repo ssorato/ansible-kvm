@@ -1,0 +1,14 @@
+.vscode
+.terraform
+*.tfstate*
+terraform.tfstate
+terraform.tfstate.*
+.terraform.lock.*
+terraform.tfvars
+*.qcow2
+deploy.sh
+
+
+
+
+

@@ -1,0 +1,69 @@
+#cloud-config
+
+disable_root: true
+ssh_pwauth: no
+
+users:
+  - name: ${ssh_user}
+    ssh_import_id:
+      - gh:${ssh_user}
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh-authorized-keys:
+      - ${ssh_public_key}
+
+write_files:
+  - path: /etc/ssh/sshd_config
+    content: |
+        AcceptEnv LANG LC_*
+        AllowUsers ${ssh_user}
+        ChallengeResponseAuthentication no
+        Compression NO
+        MaxSessions 3
+        PasswordAuthentication no
+        PermitRootLogin no
+        Port "${sshdport}"
+        PrintMotd no
+        Subsystem sftp internal-sftp
+        UseDNS no
+        UsePAM yes
+        X11Forwarding no
+
+# Set TimeZone
+timezone: America/Sao_Paulo
+
+hostname: "${hostname}"
+
+growpart:
+  mode: auto
+  devices: ['/']
+  ignore_growroot_disabled: false
+
+# Create swap partition
+swap:
+  filename: /swap.img
+  size: "auto"
+  maxsize: 2G
+
+# Install packages
+packages:
+  - figlet
+  - mlocate
+  - bash-completion
+  - firewalld
+  - chkconfig
+  - lua-libs
+  - lvm2
+
+# Update/Upgrade & Reboot if necessary
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+
+# PostInstall
+runcmd:
+  - figlet ${hostname} > /etc/motd
+  - updatedb
+  - dnf update
+
+
