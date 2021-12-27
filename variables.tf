@@ -1,11 +1,12 @@
-
 variable "domain" {
   description = "The domain/host name of the zone"
+  type        = string
   default     = "mylab.br"
 }
 
 variable "number_of_vms" {
   description = "The number of VMs to create"
+  type        = number
   default = 1
 }
 
@@ -17,6 +18,7 @@ variable "vm_name" {
 
 variable "ssh_port" {
   description = "The sshd port of the VM"
+  type        = number
   default     = 22
 }
 
@@ -27,8 +29,8 @@ variable "net_prefix" {
 
 variable "IP_addr" {
   description = "Last byte about mac & iP address for this VM"
-  type        = list(string)
-  default     = ["11"]
+  type        = list(number)
+  default     = [11]
 }
 
 variable "mac_prefix" {
@@ -38,42 +40,47 @@ variable "mac_prefix" {
 }
 
 variable "vm_memory" {
-  description = "VM memory GB"
-  type        = number
-  default     = 2048
+  description = "The VM memory in MegaByte"
+  type        = list(number)
+  default     = [2048]
 }
 
 variable "vm_vcpu" {
   description = "VM vCPUs number"
-  type        = number
-  default     = 2
+  type        = list(number)
+  default     = [2]
 }
 
 variable "source_img_url" {
   description = "The source image url"
+  type        = string
   default     = "https://cloud-images.ubuntu.com/releases/focal/release/ubuntu-20.04-server-cloudimg-amd64.img"
 }
 
 variable "user_data" {
   description = "Yaml template with cloud configuration"
-  default = "user-data-ubuntu.yml"
+  type        = string
+  default     = "user-data-ubuntu.yml"
 }
 
-variable "vol_size" {
-  description = "The boot volume size for this VM"
+variable "bootvol_size" {
+  description = "VM boot volume size in GB"
+  type        = list(number)
   # 10G
-  default = 10 * 1024 * 1024 * 1024
+  default     = [10]
 }
 
 variable "datavol_size" {
-  description = "The data volume size for this VM"
+  description = "VM data volume size in GB"
+  type        = list(number)
   # 1G
-  default = 1024 * 1024 * 1024
+  default     = [1]
 }
 
 variable "ssh_public_key" {
   description = "SSH public key"
-  default = "~/.ssh/id_rsa.pub"
+  type        = string
+  default     = "~/.ssh/id_rsa.pub"
 }
 
 variable "ssh_user" {
@@ -84,5 +91,6 @@ variable "ssh_user" {
 
 variable "os_img" {
   description = "OS image file"
-  default = "focal-server-cloudimg-amd64.qcow2"
+  type        = string
+  default     = "focal-server-cloudimg-amd64.qcow2"
 }

@@ -1,10 +1,11 @@
 resource "libvirt_domain" "domain" {
-  name = var.vm_name[count.index]
-
-  memory = var.vm_memory
-  vcpu   = var.vm_vcpu
 
   count = var.number_of_vms
+
+  name = var.vm_name[count.index]
+
+  memory = var.vm_memory[count.index]
+  vcpu   = var.vm_vcpu[count.index]
   
   cloudinit = libvirt_cloudinit_disk.cloud-init[count.index].id
 
